@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dance Studio Finder</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            font-family: 'Segoe UI', sans-serif;
+            color: #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #e94560;
+            color: #fff;
+        }
+
+        p.subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        input[type="text"] {
+            padding: 12px 20px;
+            border: 2px solid #e94560;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            width: 260px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: #aaa;
+        }
+
+        input[type="text"]:focus {
+            border-color: #f5a623;
+        }
+
+        button {
+            padding: 12px 28px;
+            background: #e94560;
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background: #c73652;
+            transform: scale(1.04);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: #f5a623;
+            margin-bottom: 16px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 22px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(6px);
+        }
+
+        li strong {
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .status {
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .status-normal { background: #2ecc71; color: #000; }
+        .status-elite  { background: #f5a623; color: #000; }
+        .status-suspicious { background: #e94560; color: #fff; }
+
+        .no-results {
+            color: #aaa;
+            font-style: italic;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🕺 Dance Studio Finder</h1>
+    <p class="subtitle">Find the hottest studios near you</p>
+
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter city (e.g. Detroit)">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Results:</h2>
+        <ul>
+            {% for studio in results %}
+                <li>
+                    <strong>{{ studio.name }}</strong>
+                    {% if studio.status == "Normal" %}
+                        <span class="status status-normal">{{ studio.status }}</span>
+                    {% elif studio.status == "Elite" %}
+                        <span class="status status-elite">{{ studio.status }}</span>
+                    {% else %}
+                        <span class="status status-suspicious">{{ studio.status }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif request.method == "POST" %}
+        <p class="no-results">No studios found... or are they hiding? 👀</p>
+    {% endif %}
+</body>
+</html>
